@@ -20,6 +20,13 @@ source_name: Name of the source.
 If the URL of the Channels DVR server is not specified, the default URL http://127.0.0.1:8089 will be used.  
 The name of the channel collection will be the same as the source.
 
+## Example
+
+On my local Channels DVR server (http://127.0.0.1:8089), I have a source called "PBS" and I want to create a channel 
+collection that mirrors this source:
+
+python create_collection_from_source.py "PBS"
+
 ## Possible future improvements
 
 Create a channel collection with channels from more than one source.
