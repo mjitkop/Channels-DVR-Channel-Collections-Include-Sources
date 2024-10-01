@@ -1,5 +1,6 @@
 # Channels-DVR-Channel-Collections-Include-Sources
-Create a channel collection on a Channels DVR server with channels from the specified sources.
+Create a channel collection on a Channels DVR server with channels from the specified sources.  
+Note: channels that are marked as hidden will not be included in collections.
 
 ## Usage
 
