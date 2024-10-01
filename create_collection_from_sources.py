@@ -29,7 +29,7 @@ from CDVR_Collections import create_channel_collection_from_sources
 
 DEFAULT_IP_ADDRESS  = '127.0.0.1'
 DEFAULT_PORT_NUMBER = '8089'
-VERSION             = '2.0.0'
+VERSION             = '2.1.0'
 
 ################################################################################
 #                                                                              #

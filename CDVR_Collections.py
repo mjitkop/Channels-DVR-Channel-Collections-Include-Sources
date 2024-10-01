@@ -9,6 +9,7 @@ Version History:
 - 1.0.0: Internal release for testing and inclusion in OliveTin for Channels.
 - 2.0.0: Added support for more than one channel source for a collection
 - 2.1.0: Check for hidden channels in the sources and don't include them in the collection
+- 2.2.0: Handle the case where a collection to be created already exists on the server
 """
 
 ################################################################################
@@ -112,8 +113,16 @@ def create_channel_collection_from_sources(server_url, collection_name, source_n
         
         channel_ids.extend(source.channel_ids)
 
-    cc = ChannelCollection()
-    cc.create_on_server(server_url, collection_name, channel_ids)
+    cc = get_one_channel_collection_from_server(server_url, collection_name)
+
+    if not cc:
+        # The collection doesn't exist so create a new one
+        cc = ChannelCollection()
+        cc.create_on_server(server_url, collection_name, channel_ids)
+    else:
+        # A collection with the specified name already exist so update the channel list
+        print(f'A collection with the name {collection_name} already exists on the server so update the channel list.')
+        cc.update(server_url, channel_ids)
 
 def get_all_channel_collections_from_server(server_url) -> list:
     '''
