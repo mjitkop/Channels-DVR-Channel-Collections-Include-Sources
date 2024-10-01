@@ -10,6 +10,7 @@ Version History:
 - 2.0.0: Added support for more than one channel source for a collection
 - 2.1.0: Check for hidden channels in the sources and don't include them in the collection
 - 2.2.0: Handle the case where a collection to be created already exists on the server
+- 2.2.1: Added quotation marks around collection name to show it as a string
 """
 
 ################################################################################
@@ -121,7 +122,7 @@ def create_channel_collection_from_sources(server_url, collection_name, source_n
         cc.create_on_server(server_url, collection_name, channel_ids)
     else:
         # A collection with the specified name already exist so update the channel list
-        print(f'A collection with the name {collection_name} already exists on the server so update the channel list.')
+        print(f'A collection with the name "{collection_name}" already exists on the server so update the channel list.')
         cc.update(server_url, channel_ids)
 
 def get_all_channel_collections_from_server(server_url) -> list:
