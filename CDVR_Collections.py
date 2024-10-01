@@ -8,6 +8,7 @@ Disclaimer: this is an unofficial script that is NOT supported by the developers
 Version History:
 - 1.0.0: Internal release for testing and inclusion in OliveTin for Channels.
 - 2.0.0: Added support for more than one channel source for a collection
+- 2.1.0: Check for hidden channels in the sources and don't include them in the collection
 """
 
 ################################################################################
@@ -173,7 +174,9 @@ def get_source_from_server(server_url, source_name) -> Optional[ChannelSource]:
             cs.name = source_name
 
             for channel in source['Channels']:
-                cs.channel_ids.append(channel['ID'])
+                hidden = channel.get('Hidden', None)
+                if not hidden:
+                    cs.channel_ids.append(channel['ID'])
 
             requested_source = cs
             break

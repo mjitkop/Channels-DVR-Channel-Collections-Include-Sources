@@ -18,7 +18,7 @@ Version History:
 ################################################################################
 
 import argparse, sys
-from Collections import create_channel_collection_from_sources
+from CDVR_Collections import create_channel_collection_from_sources
 
 ################################################################################
 #                                                                              #
