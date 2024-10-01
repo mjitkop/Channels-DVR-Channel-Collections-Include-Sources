@@ -9,6 +9,7 @@ Disclaimer: this is an unofficial script that is NOT supported by the developers
 Version History:
 - 1.0.0: Internal release for testing and inclusion in OliveTin for Channels.
 - 2.0.0: Allow more than one channel source for one collection 
+- 2.1.0: Use CDVR_Collections now since Collections was renamed
 """
 
 ################################################################################
