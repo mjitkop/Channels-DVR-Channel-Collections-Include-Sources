@@ -7,6 +7,7 @@ Disclaimer: this is an unofficial script that is NOT supported by the developers
 
 Version History:
 - 1.0.0: Internal release for testing and inclusion in OliveTin for Channels.
+- 2.0.0: Added support for more than one channel source for a collection
 """
 
 ################################################################################
@@ -90,18 +91,28 @@ class ChannelSource:
 #                                                                              #
 ################################################################################
 
-def create_channel_collection_from_source(server_url, source_name) -> None:
+def create_channel_collection_from_sources(server_url, collection_name, source_names) -> None:
     '''
-    Create a channel collection on the server such that it contains all the channels specified in the given source.
-    The name of the channel collection will be the same as the source name.
+    Create a channel collection on the server such that it contains all the channels specified in the given sources.
     '''
-    source = get_source_from_server(server_url, source_name)
+    channel_ids = []
 
-    if not source:
-        raise RuntimeError(f'No source with the name "{source_name}" found on the Channels DVR server located at {server_url}!')
+    if len(source_names) == 1:
+        # Only one source
+        if not collection_name:
+            # Collection name not specified so use the name of the source
+            collection_name = source_names[0]
+
+    for s_name in source_names:
+        source = get_source_from_server(server_url, s_name)
+
+        if not source:
+            raise RuntimeError(f'No source with the name "{s_name}" found on the Channels DVR server located at {server_url}!')
+        
+        channel_ids.extend(source.channel_ids)
 
     cc = ChannelCollection()
-    cc.create_on_server(server_url, source_name, source.channel_ids)
+    cc.create_on_server(server_url, collection_name, channel_ids)
 
 def get_all_channel_collections_from_server(server_url) -> list:
     '''

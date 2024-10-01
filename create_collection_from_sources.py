@@ -8,6 +8,7 @@ Disclaimer: this is an unofficial script that is NOT supported by the developers
 
 Version History:
 - 1.0.0: Internal release for testing and inclusion in OliveTin for Channels.
+- 2.0.0: Allow more than one channel source for one collection 
 """
 
 ################################################################################
@@ -17,7 +18,7 @@ Version History:
 ################################################################################
 
 import argparse, sys
-from Collections import create_channel_collection_from_source
+from Collections import create_channel_collection_from_sources
 
 ################################################################################
 #                                                                              #
@@ -25,9 +26,9 @@ from Collections import create_channel_collection_from_source
 #                                                                              #
 ################################################################################
 
+DEFAULT_IP_ADDRESS  = '127.0.0.1'
 DEFAULT_PORT_NUMBER = '8089'
-LOOPBACK_ADDRESS    = '127.0.0.1'
-VERSION             = '1.0.0'
+VERSION             = '2.0.0'
 
 ################################################################################
 #                                                                              #
@@ -38,35 +39,62 @@ VERSION             = '1.0.0'
 if __name__ == "__main__":
     # Create an ArgumentParser object
     parser = argparse.ArgumentParser(
-                description = "Create a channel collection on a Channels DVR server with channels from the specified source.",
+                description = "Create a channel collection on a Channels DVR server with channels from the specified source(s).",
                 epilog = "If the URL of the Channels DVR server is not specified, the default URL http://127.0.0.1:8089 " + \
                          "will be used.\n" + \
-                         "The name of the channel collection will be the same as the source.")
+                         "In the case where only one source is given, the collection name is not required and will automatically " + \
+                         "take the name of the source.\n" + \
+                         "In the case where more than one source is given, the collection name (-n option) is required.")
 
     # Add the input arguments
-    parser.add_argument('-i', '--ip_address', type=str, default=LOOPBACK_ADDRESS, \
+    parser.add_argument('-i', '--ip_address', type=str, default=DEFAULT_IP_ADDRESS, \
                         help='IP address of the Channels DVR server. Not required. Default: 127.0.0.1')
+    parser.add_argument('-n', '--collection_name', type=str, default=None, \
+                        help='Name of the collection. Required when more than one source is specified.' + \
+                             'Not required when only one source is specified. In this case, the collection name will ' + \
+                             'automatically take the name of the one source by default, unless overwritten with this option.')
     parser.add_argument('-p', '--port_number', type=str, default=DEFAULT_PORT_NUMBER, \
                         help='Port number of the Channels DVR server. Not required. Default: 8089')
     parser.add_argument('-v', '--version', action='store_true', help='Print the version number and exit the program.')
-    parser.add_argument('source_name', type=str, help='Name of the source.')
+    parser.add_argument('source_names', nargs='+', help='Name(s) of the source(s) from the server to get channels from.' + \
+                                                        'If more than one, separate the names with spaces.')
 
     # Parse the arguments
     args = parser.parse_args()
 
     # Access the values of the arguments
+    collection_name   = args.collection_name
     ip_address        = args.ip_address
     port_number       = args.port_number
-    source_name       = args.source_name
+    source_names      = args.source_names
     version           = args.version
+
+    print('Inputs:')
+    print(f'  Collection name = "{collection_name}"')
+    print(f'  IP address      = {ip_address}')
+    print(f'  Port number     = {port_number}')
+    print(f'  Source name(s)  = {source_names}')
+    print(f'  Print version   = {version}\n')
 
     # If the version flag is set, print the version number and exit
     if version:
-        print(VERSION)
+        print(f'Version: {VERSION}')
+        sys.exit()
+
+    # Sanity check on the arguments
+    if not collection_name and len(source_names) > 1:
+        print('Since more than one source is given, a collection name is required.')
         sys.exit()
 
     server_url = f'http://{ip_address}:{port_number}'
 
-    print(f'Creating a channel collection with the channels from source "{source_name}" on the Channels DVR server located at {server_url}...')
-    create_channel_collection_from_source(server_url, source_name)
+    message = 'Creating a collection with the channels from '
+    if len(source_names) > 1:
+        message += 'sources'
+    else:
+        message += 'source'
+    message += f' {source_names} on the Channels DVR server located at {server_url}...'
+
+    print(message)
+    create_channel_collection_from_sources(server_url, collection_name, source_names)
     print('Done!')

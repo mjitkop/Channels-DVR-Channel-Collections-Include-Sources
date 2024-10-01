@@ -3,30 +3,40 @@ Create a channel collection on a Channels DVR server with channels from the spec
 
 ## Usage
 
-python create_collection_from_source.py [-h] [-i IP_ADDRESS] [-p PORT_NUMBER] [-v] source_name
+python create_collection_from_sources.py [-h] [-i IP_ADDRESS] [-n COLLECTION_NAME] [-p PORT_NUMBER] [-v] source_names [source_names ...]
 
 ### Positional Arguments  
-source_name: Name of the source.  
+#### source_names  
+    Name(s) of the source(s) from the server to get channels from. If more than one, separate the names with spaces.  
 
 ### Options  
--h, --help: Show this help message and exit.
+#### -h, --help  
+    Show this help message and exit.  
 
--i IP_ADDRESS, --ip_address IP_ADDRESS: IP address of the Channels DVR server. Not required. Default: 127.0.0.1.
+#### -i IP_ADDRESS, --ip_address IP_ADDRESS    
+    IP address of the Channels DVR server. Not required. Default: 127.0.0.1.  
 
--p PORT_NUMBER, --port_number PORT_NUMBER: Port number of the Channels DVR server. Not required. Default: 8089.
+#### -n COLLECTION_NAME, --collection_name COLLECTION_NAME  
+    Name of the collection. Required when more than one source is specified.  
+    Not required when only one source is specified. In this case, the collection name will automatically take the name of the one source by default, unless overwritten with this option.  
+    
+#### -p PORT_NUMBER, --port_number PORT_NUMBER  
+    Port number of the Channels DVR server. Not required. Default: 8089.
 
--v, --version: Print the version number and exit the program.  
+#### -v, --version  
+    Print the version number and exit the program.  
 
-If the URL of the Channels DVR server is not specified, the default URL http://127.0.0.1:8089 will be used.  
-The name of the channel collection will be the same as the source.
+## Examples
 
-## Example
+### One source  
 
 On my local Channels DVR server (http://127.0.0.1:8089), I have a source called "PBS" and I want to create a channel 
 collection that mirrors this source:
 
-python create_collection_from_source.py "PBS"
+> python create_collection_from_sources.py "PBS"
 
-## Possible future improvements
+### Two sources
 
-Create a channel collection with channels from more than one source.
+On my local Channels DVR server, I have two sources for Frndly TV: "Frndly TV (with EPG)" and "Frndly TV (no EPG)". I want to combine them into a single channel collection that I will call "Frndly TV":
+
+> python create_collection_from_sources.py -n "Frndly TV" "Frndly TV (with EPG)" "Frndly TV (no EPG)"
