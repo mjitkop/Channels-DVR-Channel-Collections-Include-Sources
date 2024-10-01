@@ -35,6 +35,16 @@ collection that mirrors this source:
 
 > python create_collection_from_sources.py "PBS"
 
+### One source on a different (could be remote) server host
+
+The Channels DVR server is located at 192.168.4.100 and using the default port number of 8089. I want to create the same "PBS" collection:
+
+> python create_collection_from_sources.py -i 192.168.4.100 "PBS"
+
+and if the port number is 8090:
+
+> python create_collection_from_sources.py -i 192.168.4.100 -p 8090 "PBS"
+
 ### Two sources
 
 On my local Channels DVR server, I have two sources for Frndly TV: "Frndly TV (with EPG)" and "Frndly TV (no EPG)". I want to combine them into a single channel collection that I will call "Frndly TV":
