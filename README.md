@@ -3,7 +3,7 @@ Create a channel collection on a Channels DVR server with channels from the spec
 
 ## Usage
 
-python create_collection_from_sources.py [-h] [-i IP_ADDRESS] [-n COLLECTION_NAME] [-p PORT_NUMBER] [-v] source_names [source_names ...]
+> python create_collection_from_sources.py [-h] [-i IP_ADDRESS] [-n COLLECTION_NAME] [-p PORT_NUMBER] [-v] source_names [source_names ...]
 
 ### Positional Arguments  
 #### source_names  
